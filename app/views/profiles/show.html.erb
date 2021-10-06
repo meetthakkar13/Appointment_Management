@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @profile.name %>
+</p>
+
+<p>
+  <strong>Contact:</strong>
+  <%= @profile.contact %>
+</p>
+
+<p>
+  <strong>Registration no:</strong>
+  <%= @profile.reg_no %>
+</p>
+
+<% if current_user&.doctor? %>
+<p>
+  <strong>Specialities:</strong>
+  <%= @profile.specialities %>
+</p>
+<% end %>
+<p>
+  <strong>Email:</strong>
+  <%= @profile.email %>
+</p>
+
+<%= link_to 'Edit', edit_profile_path(@profile) %> |
+<%= link_to 'Back', profiles_path %>
