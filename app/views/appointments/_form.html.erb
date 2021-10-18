@@ -1,0 +1,65 @@
+<%= form_with(model: appointment) do |f| %>
+  <% if appointment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(appointment.errors.count, "error") %> prohibited this appointment from being saved:</h2>
+      <ul>
+        <% appointment.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field">
+    <%= f.check_box :completed %>
+    <%= f.label :completed %><br>
+  </div>
+  <div class="field">
+    <%= f.label :appointment_datetime %>
+    <%= f.datetime_select :appointment_datetime %>
+  </div>
+    <% if current_user %>
+      <%= f.hidden_field :user_id, value: current_user.id %>
+  <% end %>
+  <div class="field">
+    <%= f.label :specialities %>
+    <%= f.select(:specialities_id, Profile.all.collect {|p| [p.specialities, p.id]},  {prompt: "--Select--"}, {class: 'form-control'}) %>
+  </div>
+  <div class="field">
+  <%= f.label :doctors %>
+    <%= f.select(:doctor_id, User.all.collect {|doctor| [doctor.email, doctor.id] },  {prompt: "--Select--"}) %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>        
+<% end %>
+
+<script>
+  $("#appointment_doctor_id").prop("disabled", true); // second dropdown is disable while first dropdown is empty
+  $("#appointment_specialities_id").change(function(){
+      var appointment = $(this).val();
+      if(appointment == ''){
+        $("#appointment_doctor_id").prop("disabled", true);
+      }else{
+        $("#appointment_doctor_id").prop("disabled", false);
+      }
+      $.ajax({
+        url: "/user",
+        method: "GET",  
+        dataType: "json",
+        data: {appointment: appointment},
+        error: function (xhr, status, error) {
+            console.error('AJAX Error: ' + status + error);
+        },
+        success: function (response) {
+            console.log(response);
+            var appointment = response["appointment"];
+            $("#appointment_doctor_id").empty();
+
+            $("#appointment_doctor_id").append('<option>Select Task</option>');
+            for(var i = 0; i < specialities.length; i++){
+              $("#appointment_doctor_id").append('<option value="' + specialities[i]["id"] + '">' +specialities[i]["email"] + '</option>');
+            }
+        }
+      });
+  });
+</script>

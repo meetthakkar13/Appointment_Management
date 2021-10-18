@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+    <p>
+      <strong>Completed:</strong>
+      <%= @appointment.completed %>
+    </p>
+
+    <p>
+      <strong>Appointment datetime:</strong>
+      <%= @appointment.appointment_datetime %>
+    </p>
+    
+    <p>
+      <strong>Patient:</strong>
+      <%= @appointment.user_id %>
+    </p>
+
+    <p>
+      <strong>Doctor</strong>
+      <%= @appointment.doctor_id %>
+    </p>
+
+<% if @appointment.completed == false %>
+    <%= link_to 'Edit', edit_appointment_path(@appointment) %> |
+<% end %>
+<%= link_to 'Back', appointments_path %>
