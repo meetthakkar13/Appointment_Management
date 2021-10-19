@@ -1,16 +1,17 @@
 class Appointment < ApplicationRecord
   belongs_to :user
-
   validate :appointment_datetime_cannot_be_in_the_past
 
   validate :is_available?
 
-
-  def is_available?
-    Appointment.where(:appointment_datetime == self.appointment_datetime).where(:doctor_id == self.doctor_id).present? 
-    # errors.add("Appointment is overlapping")
+  ransacker :appointment_datetime, type: :date do
+    Arel.sql('date(appointment_datetime)')
   end
 
+  def is_available?
+    Appointment.where(:appointment_datetime == appointment_datetime).where(:doctor_id == doctor_id).present?
+    # errors.add("Appointment is overlapping")
+  end
 
   def appointment_datetime_cannot_be_in_the_past
     if appointment_datetime.present? && appointment_datetime < DateTime.now

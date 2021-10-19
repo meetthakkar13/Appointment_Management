@@ -26,7 +26,7 @@ class AppointmentsController < ApplicationController
 
     respond_to do |format|
       if @appointment.save
-        AppointmentMailer.with(user: current_user).appointment_confirmation_email.deliver_now
+        AppointmentMailer.with(user: current_user).appointment_confirmation_email(@appointment).deliver_now
         format.html { redirect_to @appointment, notice: 'Appointment was successfully created.' }
         format.json { render :show, status: :created, location: @appointment }
       else
@@ -39,7 +39,7 @@ class AppointmentsController < ApplicationController
   # PATCH/PUT /appointments/1 or /appointments/1.json
   def update
     respond_to do |format|
-      if @appointment.update(appointment_params)
+      if @appointment.update(update_params)
         AppointmentMailer.with(user: current_user).appointment_rescheduled_email(@appointment).deliver_now
         format.html { redirect_to @appointment, notice: 'Appointment was successfully updated.' }
         format.json { render :show, status: :ok, location: @appointment }
@@ -69,5 +69,9 @@ class AppointmentsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def appointment_params
     params.require(:appointment).permit(:user_id, :completed, :appointment_datetime, :specialities_id, :doctor_id)
+  end
+
+  def update_params
+    params.require(:appointment).permit(:appointment_datetime)
   end
 end

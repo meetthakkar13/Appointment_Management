@@ -5,13 +5,13 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   belongs_to :role, optional: true
   has_one :profile
+  has_one_attached :image
   has_many :appointments
-  has_many :patients, class_name: "User",
-                          foreign_key: "doctor_id"
+  has_many :patients, class_name: 'User'
 
-  belongs_to :doctors, class_name: "User", optional: true
+  belongs_to :doctors, class_name: 'User', optional: true
   before_create :assign_role
-  scope :doctors?, -> { where("users.role_id = 4") }
+  scope :doctors?, -> { where('users.role_id = 2') }
 
   validates :email, presence: true, uniqueness: true
 

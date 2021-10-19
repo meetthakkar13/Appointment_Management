@@ -5,7 +5,7 @@ class Ability
 
   def initialize(user)
     if user.admin?
-      can :manage, User.doctors
+      can :manage, User.doctors?
       can :manage, Role
     elsif user.doctor?
       can :read, Appointment do |appointment|
@@ -13,6 +13,9 @@ class Ability
       end
       can :update, Appointment do |appointment|
         appointment.try(:user) == user
+      end
+      can :read, Profile do |profile|
+        profile.try(:user) == user
       end
       can :destroy, Appointment do |appointment|
         appointment.try(:user) == user

@@ -20,6 +20,7 @@
         Not you?
           <% if current_user.profile.present? %>
             <%= link_to "Edit profile", edit_profile_path(current_user.profile) %>
+            <%= link_to 'Appointments', appointments_path %>
           <% elsif %>
             <%= link_to "Set profile", new_profile_path(current_user) %>
           <% else %>
