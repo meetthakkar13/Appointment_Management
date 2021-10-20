@@ -72,6 +72,6 @@ class AppointmentsController < ApplicationController
   end
 
   def update_params
-    params.require(:appointment).permit(:appointment_datetime)
+    params.require(:appointment).permit(:appointment_datetime, :completed)
   end
 end
