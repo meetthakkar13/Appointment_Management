@@ -19,10 +19,10 @@
         Signed in as <%= current_user.email %>.<br>
         Not you?
           <% if current_user.profile.present? %>
-            <%= link_to "Edit profile", edit_profile_path(current_user.profile) %>
+            <%= link_to "Edit profile", edit_profile_path(current_user.profile.user_id) %>
             <%= link_to 'Appointments', appointments_path %>
           <% elsif %>
-            <%= link_to "Set profile", new_profile_path(current_user) %>
+            <%= link_to "Set profile", new_profile_path(current_user.profile) %>
           <% else %>
             <%= link_to "Invite Doctors", new_user_invitation_path %> |
             <%= link_to "Roles", roles_path %>

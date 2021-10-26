@@ -5,8 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   belongs_to :role, optional: true
   has_one :profile, dependent: :destroy
-  has_one_attached :image
-  has_many :appointments
+  has_one_attached :image, dependent: :destroy
+  has_many :appointments, dependent: :destroy
   has_many :patients, class_name: 'User'
 
   belongs_to :doctors, class_name: 'User', optional: true
